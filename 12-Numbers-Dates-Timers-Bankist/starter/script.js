@@ -189,14 +189,40 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
+const startLogoutTimer = function () {
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+
+    // in each call , print the remainning time to the UI
+    labelTimer.textContent = `${min}:${sec}`;
+
+    //After the timer expire at 0 seconds , stop the timer and logout the user
+
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = `Log in to get started`;
+      containerApp.style.opacity = 0;
+    }
+    // decrease 1s
+    time--;
+  };
+  // setting the time 5 minutes
+  let time = 10;
+
+  //call the timer every seond
+  tick();
+  const timer = setInterval(tick, 1000);
+};
+
 ///////////////////////////////////////
 // Event handlers
 let currentAccount;
 
 //Fake ALWAYS LOGGED IN
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100;
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = 100;
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
@@ -246,6 +272,8 @@ btnLogin.addEventListener('click', function (e) {
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
+
+    startLogoutTimer();
 
     // Update UI
     updateUI(currentAccount);
