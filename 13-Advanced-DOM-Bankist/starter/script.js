@@ -222,6 +222,12 @@ const imgObserver = new IntersectionObserver(loadImg, {
 
 imgTargets.forEach(img => imgObserver.observe(img));
 
+//slider
+
+const slides = document.querySelectorAll('slide');
+
+slides.forEach;
+
 // console.log(document.documentElement);
 // console.log(document.head);
 
